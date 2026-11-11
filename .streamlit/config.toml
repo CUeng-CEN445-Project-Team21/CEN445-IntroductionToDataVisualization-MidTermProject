@@ -1,0 +1,5 @@
+# Streamlit settings (used locally and on Streamlit Community Cloud)
+# No [theme] section on purpose: the app follows each visitor's light/dark device setting.
+
+[browser]
+gatherUsageStats = false
