@@ -105,4 +105,4 @@ The dashboard implements **9 distinct visualization techniques (including 6 adva
 ### 👥 Team Contribution Matrix
 * **Yusuf Semih Can - 2022555475 :**
 * **Necdet Özdemir - 2021555049 :**
-* **Celal Kadir Aydaş - 2022555006 :**
+* **Celal Kadir Aydaş - 2022555006 : Charts 7-8-9**
