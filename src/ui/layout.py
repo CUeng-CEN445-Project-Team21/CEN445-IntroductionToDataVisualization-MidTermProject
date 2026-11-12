@@ -31,8 +31,8 @@ TABS = [
         insight="European leagues exhibit distinct goal profiles. Use the map to compare countries "
                 "and the treemap to navigate team-level productivity.",
         rows=[
-            [choropleth],
-            [treemap, league_goals_violin],
+            [choropleth],                     # Chart 1: Necdet Özdemir
+            [treemap, league_goals_violin],   # Chart 2: Necdet Özdemir | Chart 9: Celal Kadir Aydaş
         ],
     ),
     Tab(
@@ -41,8 +41,8 @@ TABS = [
         insight="Explore how halftime leads translate into fulltime victories via Sankey flow, "
                 "and inspect multi-dimensional betting lines with Parallel Coordinates.",
         rows=[
-            [sankey],
-            [parallel_coordinates, odds_contour],
+            [sankey],                              # Chart 3: Necdet Özdemir
+            [parallel_coordinates, odds_contour],  # Chart 4: Yusuf Semih Can | Chart 6: Yusuf Semih Can
         ],
     ),
     Tab(
@@ -51,8 +51,8 @@ TABS = [
         insight="Visualizing the most frequent exact scoreline combinations, bookmaker probability "
                 "efficiency, and head-to-head dominance networks.",
         rows=[
-            [score_heatmap, calibration_scatter],
-            [network_graph],
+            [score_heatmap, calibration_scatter],  # Chart 7: Celal Kadir Aydaş | Chart 8: Celal Kadir Aydaş
+            [network_graph],                       # Chart 5: Yusuf Semih Can
         ],
     ),
     Tab(
