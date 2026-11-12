@@ -100,29 +100,9 @@ The dashboard implements **9 distinct visualization techniques (including 6 adva
     ├── DEVELOPMENT_LOG.md
     └── REPORT.md
 ```
-
----
-
-### 🛠️ Working on the Project
-
-| I want to…                         | Edit                                                        |
-|-----------------------------------|-------------------------------------------------------------|
-| Change a chart                    | `src/charts/<chart>.py` — only that file                    |
-| Add a chart                       | Copy a chart file, change `build()`, add it to `src/ui/layout.py` |
-| Move a chart / change tabs        | `src/ui/layout.py`                                          |
-| Add or change a filter            | `src/ui/sidebar.py`                                         |
-| Change colours / chart theme      | `src/theme.py`                                              |
-| Add data                          | Put the file in `data/raw/` — see `data/raw/README.md`      |
-| Add a league                      | One line in `LEAGUE_METADATA`, `src/data/schema.py`         |
-
-- **Chart contract:** every chart module has `build(df) -> go.Figure` and `render(df)`. `df` is the filtered dataset, with columns documented in `src/data/schema.py`. Widgets inside a chart need a unique `key`, for example `key="network_graph_league"`.
-- **Data:** the app rebuilds `data/processed/` automatically when `data/raw/` changes. You can also rebuild by hand with `python -m src.data.pipeline`. Commit the raw file together with the regenerated `data/processed/` files. If two branches both changed the data and the parquet conflicts in a merge, don't try to merge it: rebuild it and commit the result.
-- **Git:** work on your own branch and open a pull request into `main`.
-
 ---
 
 ### 👥 Team Contribution Matrix
-*(Edit according to your team member assignments)*
-* **Member 1 (Name - Student ID):** Data pipeline & feature engineering, Sankey diagram, Treemap, Network Graph.
-* **Member 2 (Name - Student ID):** Parallel Coordinates, Geographical Choropleth Map, K-Means Clustering, Streamlit UI & filter panel.
-* **Member 3 (Name - Student ID):** 2D Density Plot, Heatmaps, Logistic Regression Classifier, Documentation & Final Report.
+* **Necdet Özdemir - 2021555049 : Charts 1-2-3**
+* **Yusuf Semih Can - 2022555475 :Charts 4-5-6**
+* **Celal Kadir Aydaş - 2022555006 : Charts 7-8-9**
