@@ -28,11 +28,24 @@ if not exist "%USERPROFILE%\.streamlit\credentials.toml" (
     (echo [general]& echo email = "") > "%USERPROFILE%\.streamlit\credentials.toml"
 )
 
+rem Pick the first free port from 8501 upward (checks IPv4 and IPv6 listeners).
+set "PORT="
+for /f "delims=" %%p in ('powershell -NoProfile -Command "$u=[Net.NetworkInformation.IPGlobalProperties]::GetIPGlobalProperties().GetActiveTcpListeners().Port; (8501..8999).Where({$u -notcontains $_},'First')"') do set "PORT=%%p"
+
 echo.
-echo Starting dashboard at http://localhost:8501
+if defined PORT (
+    echo Starting dashboard at http://localhost:%PORT%
+) else (
+    echo Starting dashboard ^(Streamlit will print the URL below^)
+)
 echo Close this window (or press Ctrl+C) to stop the server.
 echo.
-".venv\Scripts\python.exe" -m streamlit run app.py
+if defined PORT (
+    ".venv\Scripts\python.exe" -m streamlit run app.py --server.port %PORT%
+) else (
+    rem Port lookup failed: let Streamlit choose, it skips busy ports itself.
+    ".venv\Scripts\python.exe" -m streamlit run app.py
+)
 
 rem Keep the window open if Streamlit exits with an error so it can be read.
 if errorlevel 1 pause
