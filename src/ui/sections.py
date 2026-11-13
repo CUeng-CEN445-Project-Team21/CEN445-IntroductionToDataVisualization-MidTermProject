@@ -19,13 +19,11 @@ def header(df: pd.DataFrame):
     over_25_rate = (df['is_over_25'] == 1).mean() * 100 if total else 0
     btts_rate = (df['btts'] == 1).mean() * 100 if total else 0
 
-    kpi1.metric("Matches Displayed", f"{total:,}")
-    kpi2.metric("Avg Goals / Match", f"{avg_goals:.2f}")
-    kpi3.metric("Home Win Advantage", f"{home_win_rate:.1f}%")
-    kpi4.metric("Over 2.5 Goals", f"{over_25_rate:.1f}%")
-    kpi5.metric("Both Teams Scored", f"{btts_rate:.1f}%")
-
-    st.write("---")
+    kpi1.metric("Matches Displayed", f"{total:,}", border=True)
+    kpi2.metric("Avg Goals / Match", f"{avg_goals:.2f}", border=True)
+    kpi3.metric("Home Win Advantage", f"{home_win_rate:.1f}%", border=True)
+    kpi4.metric("Over 2.5 Goals", f"{over_25_rate:.1f}%", border=True)
+    kpi5.metric("Both Teams Scored", f"{btts_rate:.1f}%", border=True)
 
 
 def data_explorer(df: pd.DataFrame):

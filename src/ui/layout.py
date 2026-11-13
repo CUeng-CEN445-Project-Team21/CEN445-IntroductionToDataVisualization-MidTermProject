@@ -1,7 +1,12 @@
 """
 layout.py - What goes where on the page. This file is a map of the dashboard.
 
-Each tab has a list of rows. A row is a list of modules drawn side by side
+The page has two tabs:
+  * Visual Analysis - the nine charts, split into three segments (one per team member).
+                      A segmented control at the top picks which segment is shown.
+  * AI & Machine Learning - the clustering and classification models.
+
+Each segment has a list of rows. A row is a list of modules drawn side by side
 (one module = full width, two = two columns, ...). The string "---" draws a divider.
 """
 
@@ -17,68 +22,87 @@ from src.ml import classifier, clustering
 
 
 @dataclass
-class Tab:
-    label: str
+class Segment:
+    label: str      # shown on the segmented control
     heading: str
     insight: str
     rows: list
 
 
-TABS = [
-    Tab(
-        label="🌍 1. League & Geography",
-        heading="Geographical Landscape & League Hierarchies",
-        insight="European leagues exhibit distinct goal profiles. Use the map to compare countries "
-                "and the treemap to navigate team-level productivity.",
+CHART_SEGMENTS = [
+    Segment(
+        label="Charts 1–3 · League & Momentum",
+        heading="Geographical Landscape, League Hierarchies & Match Momentum",
+        insight="Compare countries on the map, drill into team-level productivity with the treemap, "
+                "and follow how halftime leads turn into fulltime results in the Sankey flow.",
         rows=[
-            [choropleth],                     # Chart 1: Necdet Özdemir
-            [treemap, league_goals_violin],   # Chart 2: Necdet Özdemir | Chart 9: Celal Kadir Aydaş
+            [choropleth],        # Chart 1: Necdet Özdemir
+            [treemap, sankey],   # Chart 2: Necdet Özdemir | Chart 3: Necdet Özdemir
         ],
     ),
-    Tab(
-        label="🌊 2. Match Momentum & Odds",
-        heading="Match Flow Dynamics & Multi-Dimensional Odds Space",
-        insight="Explore how halftime leads translate into fulltime victories via Sankey flow, "
-                "and inspect multi-dimensional betting lines with Parallel Coordinates.",
+    Segment(
+        label="Charts 4–6 · Odds & Networks",
+        heading="Multi-Dimensional Odds Space & Team Dominance Network",
+        insight="Inspect betting lines across several dimensions at once, see which teams dominate "
+                "head-to-head, and find where upsets cluster in the odds landscape.",
         rows=[
-            [sankey],                              # Chart 3: Necdet Özdemir
-            [parallel_coordinates, odds_contour],  # Chart 4: Yusuf Semih Can | Chart 6: Yusuf Semih Can
+            [parallel_coordinates],         # Chart 4: Yusuf Semih Can
+            [network_graph, odds_contour],  # Chart 5: Yusuf Semih Can | Chart 6: Yusuf Semih Can
         ],
     ),
-    Tab(
-        label="🔥 3. Scores & Team Networks",
-        heading="Exact Score Matrix, Calibration & Team Dominance Network",
-        insight="Visualizing the most frequent exact scoreline combinations, bookmaker probability "
-                "efficiency, and head-to-head dominance networks.",
+    Segment(
+        label="Charts 7–9 · Scores & Goals",
+        heading="Exact Score Matrix, Market Calibration & Goal Distributions",
+        insight="See the most frequent exact scorelines, how well bookmaker probabilities match "
+                "reality, and how goal output is distributed in each league.",
         rows=[
             [score_heatmap, calibration_scatter],  # Chart 7: Celal Kadir Aydaş | Chart 8: Celal Kadir Aydaş
-            [network_graph],                       # Chart 5: Yusuf Semih Can
-        ],
-    ),
-    Tab(
-        label="🤖 4. Machine Learning & Predictive Insights",
-        heading="Machine Learning Augmentation (Clustering & Classification)",
-        insight="Machine learning models identify underlying tactical archetypes of teams and provide "
-                "probability distributions for match outcomes based on market closing lines.",
-        rows=[
-            [clustering],
-            "---",
-            [classifier],
+            [league_goals_violin],                 # Chart 9: Celal Kadir Aydaş
         ],
     ),
 ]
 
+ML_SEGMENT = Segment(
+    label="AI & Machine Learning",
+    heading="Machine Learning Augmentation (Clustering & Classification)",
+    insight="Machine learning models identify underlying tactical archetypes of teams and provide "
+            "probability distributions for match outcomes based on market closing lines.",
+    rows=[
+        [clustering],
+        "---",
+        [classifier],
+    ],
+)
+
+
+def _draw_segment(segment: Segment, df):
+    st.subheader(segment.heading)
+    st.caption(f"💡 {segment.insight}")
+    for row in segment.rows:
+        if row == "---":
+            st.divider()
+            continue
+        for module, column in zip(row, st.columns(len(row))):
+            with column, st.container(border=True):
+                module.render(df)
+
 
 def render(df):
-    for tab, container in zip(TABS, st.tabs([t.label for t in TABS])):
-        with container:
-            st.subheader(tab.heading)
-            st.info(f"💡 **Analytical Insight:** {tab.insight}")
-            for row in tab.rows:
-                if row == "---":
-                    st.write("---")
-                    continue
-                columns = st.columns(len(row)) if len(row) > 1 else [st.container()]
-                for module, column in zip(row, columns):
-                    with column:
-                        module.render(df)
+    charts_tab, ml_tab = st.tabs(["📊 Visual Analysis", "🤖 AI & Machine Learning"])
+
+    with charts_tab:
+        labels = [s.label for s in CHART_SEGMENTS]
+        choice = st.segmented_control(
+            "Chart group",
+            options=labels,
+            default=labels[0],
+            key="layout_chart_segment",
+            label_visibility="collapsed",
+            width="stretch",
+        )
+        # Clicking the active segment again deselects it; fall back to the first one.
+        segment = CHART_SEGMENTS[labels.index(choice)] if choice else CHART_SEGMENTS[0]
+        _draw_segment(segment, df)
+
+    with ml_tab:
+        _draw_segment(ML_SEGMENT, df)
