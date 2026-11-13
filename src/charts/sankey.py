@@ -85,7 +85,7 @@ def build(df: pd.DataFrame) -> go.Figure:
     fig.update_layout(
         title="🌊 3. Half-Time to Full-Time Result Momentum (Sankey Flow)",
         template=THEME_TEMPLATE,
-        height=450,
+        height=480,
         margin=dict(l=10, r=10, t=50, b=10)
     )
     return fig

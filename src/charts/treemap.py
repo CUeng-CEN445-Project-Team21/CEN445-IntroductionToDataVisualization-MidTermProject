@@ -42,7 +42,7 @@ def build(df: pd.DataFrame) -> go.Figure:
             title="🌳 2. Goal Dominance & Wins Treemap (League & Team Hierarchy)",
             template=THEME_TEMPLATE,
             margin=dict(l=10, r=10, t=50, b=10),
-            height=500,
+            height=480,
         )
         return fig
 
@@ -76,7 +76,7 @@ def build(df: pd.DataFrame) -> go.Figure:
             len=0.85,
         ),
         margin=dict(l=10, r=10, t=50, b=10),
-        height=500
+        height=480
     )
     return fig
 
