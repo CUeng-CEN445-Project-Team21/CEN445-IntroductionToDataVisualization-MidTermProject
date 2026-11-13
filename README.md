@@ -91,7 +91,7 @@ The dashboard implements **9 distinct visualization techniques (including 6 adva
 │   │   ├── clustering.py       # K-Means team archetypes
 │   │   └── classifier.py       # Logistic Regression + live simulator
 │   └── ui/
-│       ├── layout.py           # Which chart goes in which tab / column  ← the page map
+│       ├── layout.py           # Tabs, chart segments and columns      ← the page map
 │       ├── sidebar.py          # Filters
 │       ├── sections.py         # Header, KPI row, data explorer, footer
 │       └── styles.py           # Custom CSS
