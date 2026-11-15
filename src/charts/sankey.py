@@ -60,7 +60,7 @@ def build(df: pd.DataFrame) -> go.Figure:
         node=dict(
             pad=18,
             thickness=22,
-            line=dict(color="rgba(15, 23, 42, 0.6)", width=0.6),
+            line=dict(color="rgba(148, 163, 184, 0.6)", width=0.6),
             label=node_labels,
             color=node_colors,
             hovertemplate="<b>%{label}</b><br>Matches: <b>%{value:,}</b><extra></extra>",
@@ -93,3 +93,14 @@ def build(df: pd.DataFrame) -> go.Figure:
 
 def render(df: pd.DataFrame):
     st.plotly_chart(build(df), width="stretch")
+    total = len(df)
+    ht_leads = df[df['htr'].isin(['H', 'A'])]
+    held = int((ht_leads['htr'] == ht_leads['ftr']).sum())
+    comebacks = int((((df['htr'] == 'A') & (df['ftr'] == 'H')) |
+                     ((df['htr'] == 'H') & (df['ftr'] == 'A'))).sum())
+    parts = [f"{total:,} matches"]
+    if len(ht_leads) > 0:
+        parts.append(f"HT leaders won {held / len(ht_leads):.1%} ({held:,}/{len(ht_leads):,})")
+    if total > 0:
+        parts.append(f"comebacks: {comebacks:,} ({comebacks / total:.1%})")
+    st.caption(" · ".join(parts) + ". Hover any flow for exact breakdown.")

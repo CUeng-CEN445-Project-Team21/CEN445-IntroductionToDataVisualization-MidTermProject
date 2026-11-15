@@ -67,7 +67,7 @@ def build(df: pd.DataFrame) -> go.Figure:
 
     fig.update_traces(
         selector=dict(type='choropleth'),
-        marker_line_color='rgba(255, 255, 255, 0.55)',
+        marker_line_color='rgba(148, 163, 184, 0.7)',
         marker_line_width=1.1,
         hovertemplate=(
             "<b>%{hovertext} — %{customdata[0]}</b><br><br>"
@@ -127,3 +127,12 @@ def build(df: pd.DataFrame) -> go.Figure:
 
 def render(df: pd.DataFrame):
     st.plotly_chart(build(df), width="stretch")
+    league_avg = df.groupby('league_name')['total_goals'].mean()
+    if not league_avg.empty:
+        top_lg, top_val = league_avg.idxmax(), league_avg.max()
+        low_lg, low_val = league_avg.idxmin(), league_avg.min()
+        st.caption(
+            f"Showing {len(df):,} matches across {len(league_avg)} league(s) · "
+            f"Highest: {top_lg} ({top_val:.2f} goals/match) · "
+            f"Lowest: {low_lg} ({low_val:.2f} goals/match)."
+        )
