@@ -125,7 +125,7 @@ def build(df: pd.DataFrame, market: str = "Home Win", show_band: bool = True, n_
     fig.add_annotation(
         text=f"Avg Market Discrepancy: ±{mean_gap:.1f}%",
         xref="paper", yref="paper",
-        x=0.03, y=0.95,
+        x=0.03, y=0.92,
         showarrow=False,
         bgcolor="rgba(30, 41, 59, 0.8)",
         bordercolor="#334155",
@@ -134,18 +134,24 @@ def build(df: pd.DataFrame, market: str = "Home Win", show_band: bool = True, n_
     )
 
     fig.update_layout(
-        title=f"8. Market Efficiency & Calibration ({market})",
+        title=dict(
+            text=f"8. Market Efficiency & Calibration ({market})",
+            x=0.01,
+            y=0.98,
+            xanchor="left",
+            yanchor="top"
+        ),
         xaxis=dict(title=f"Bookmaker Implied Probability ({market})", tickformat=".0%"),
         yaxis=dict(title=f"Empirical Win Rate ({market})", tickformat=".0%"),
         template=THEME_TEMPLATE,
-        height=430,
-        margin=dict(l=10, r=10, t=55, b=10),
+        height=450,
+        margin=dict(l=10, r=10, t=80, b=10),
         legend=dict(
             orientation="h",
-            yanchor="bottom",
-            y=0.99,
-            xanchor="right",
-            x=0.80
+            yanchor="top",
+            y=1.10,
+            xanchor="left",
+            x=0.01
         )
     )
     return fig
