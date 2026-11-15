@@ -36,7 +36,7 @@ Every chart and model answers one question that no other chart answers. Only cha
 | 1 | One country (league) | `country_iso3` on the map | Home advantage = home win % − away win % (runs from +8.3 pp in the Bundesliga to +18.6 pp in the Süper Lig) ⚠️ *in progress: the map is still coloured by average goals* | — |
 | 2 | One team inside its league | Nested tiles: All → league → team | Wins | Area = goals scored |
 | 3 | One HT → FT flow | Left = `htr`, right = `ftr` | Lead held / comeback / shift | Width = matches |
-| 4 | One team | 7 axes: points per game, goals scored / match, goals conceded / match, win %, draw %, clean-sheet %, BTTS % | Points per game | — |
+| 4 | One team | 7 axes: points per game, goals scored / match, goals conceded / match, win %, draw %, clean-sheet %, BTTS % | Points per game (blue = below average, white = average, red = above average) | — |
 | 5 | One of a league's top 8 teams (most wins, home + away) | Circle | Net wins inside the group (wins − losses) | Node = wins inside the group; arrow = wins in that pairing |
 | 6 | One league in one month | X = home win % so far, Y = avg goals so far | League | Matches played so far |
 | 7 | One scoreline (0–5 × 0–5) | X = away goals, Y = home goals | Match count or % | — |

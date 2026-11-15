@@ -34,6 +34,21 @@ function readTheme(root) {
   return { text: cs.color, font: cs.fontFamily, bg: pageBackground(root) };
 }
 
+function isDark(color) {
+  const [r, g, b] = (color.match(/\d+(\.\d+)?/g) || [255, 255, 255]).map(Number);
+  return 0.299 * r + 0.587 * g + 0.114 * b < 128;
+}
+
+// Line colours and legend gradient for the current page theme (the scale's middle differs).
+function applyThemeColors(ui, legendBar) {
+  const dark = isDark(ui.theme.bg);
+  ui.d.color = (dark ? ui.d.colorDark : ui.d.colorLight) || [];
+  if (legendBar && ui.d.legend) {
+    const stops = dark ? ui.d.legend.stopsDark : ui.d.legend.stopsLight;
+    legendBar.style.background = `linear-gradient(to right, ${stops.join(", ")})`;
+  }
+}
+
 function roundRect(ctx, x, y, w, h, r) {
   ctx.beginPath();
   if (ctx.roundRect) ctx.roundRect(x, y, w, h, r);
@@ -356,12 +371,13 @@ export default function (component) {
   root.querySelector(".pc-title").textContent = data.title;
   const legend = root.querySelector(".pc-legend");
   legend.replaceChildren();
+  ui.legendBar = null;
   if (data.legend) {
-    const bar = el("span", "pc-gradient");
-    bar.style.background = `linear-gradient(to right, ${data.legend.stops.join(", ")})`;
-    legend.append(el("span", null, data.legend.label), el("span", "pc-muted", data.legend.lo), bar,
+    ui.legendBar = el("span", "pc-gradient");
+    legend.append(el("span", null, data.legend.label), el("span", "pc-muted", data.legend.lo), ui.legendBar,
                   el("span", "pc-muted", data.legend.hi));
   }
+  applyThemeColors(ui, ui.legendBar);
 
   const redrawAll = () => { resize(ui); drawBase(ui); drawOver(ui); };
   redrawAll();
@@ -380,6 +396,7 @@ export default function (component) {
     const theme = readTheme(root);                    // light/dark switched since the last draw?
     if (theme.text !== ui.theme.text || theme.bg !== ui.theme.bg) {
       ui.theme = theme;
+      applyThemeColors(ui, ui.legendBar);
       drawBase(ui);
     }
     const h = hit(ui, ui.mx, ui.my);

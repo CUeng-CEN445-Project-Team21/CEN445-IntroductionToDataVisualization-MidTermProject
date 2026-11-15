@@ -3,7 +3,8 @@
 Question: What does each team's full statistical profile look like?
 
 One line = one team. Seven axes, left to right: points per game, goals scored / match,
-goals conceded / match, win %, draw %, clean-sheet %, BTTS %. Line colour = points per game.
+goals conceded / match, win %, draw %, clean-sheet %, BTTS %. Line colour = points per game
+(diverging: blue below the average team, red above it).
 Team stats come from a long table with one row per team per match (home side: goals for =
 fthg, against = ftag; away side the reverse).
 
@@ -36,9 +37,16 @@ CHART_KEY = "parallel_coordinates_chart"
 BINS = "parallel_coordinates_bins"     # session state: {axis key: [chosen bin indices]}
 MIN_MATCHES = 15   # same cut-off as ML1; every team has 15+ matches under the default filters
 
-# Single-hue blue ramp, light -> dark = low -> high points per game. The ends stay off the
-# extremes so the lines read on both Streamlit's light and dark backgrounds.
-PPG_COLORSCALE = [[0, '#b7d3f6'], [0.5, '#3987e5'], [1, '#104281']]
+# Diverging scale for points per game: blue = below the average team, red = above it, and
+# the middle is the average. In dark mode the middle is white. In light mode it is a pale
+# warm grey, because white lines vanish on the cream page. The component picks the set that
+# matches the page.
+# Saturated quarter stops keep the colour vivid on the way to the middle instead of fading
+# to grey.
+PPG_COLORSCALE_LIGHT = [[0, '#0B4FE0'], [0.25, '#3D86F5'], [0.5, '#C9C3B6'],
+                        [0.75, '#F5553D'], [1, '#D90F1F']]
+PPG_COLORSCALE_DARK = [[0, '#2E86FF'], [0.25, '#7AB8FF'], [0.5, '#FFFFFF'],
+                       [0.75, '#FF8A70'], [1, '#FF3B30']]
 
 _HERE = Path(__file__).parent
 _COMPONENT = components.component(
@@ -205,9 +213,11 @@ def build(df: pd.DataFrame, league: str | None = None) -> tuple[dict, pd.DataFra
     axes, y = _axes_payload(teams, picked, selecting)
     n_picked = int(picked.sum())
 
+    # Worst team = full blue, average team = middle, best team = full red.
     ppg = teams['ppg']
-    span = ppg.max() - ppg.min()
-    norm = ((ppg - ppg.min()) / span).tolist() if span else [0.5] * len(teams)
+    lo, avg, hi = ppg.min(), ppg.mean(), ppg.max()
+    norm = np.where(ppg < avg, 0.5 * (ppg - lo) / max(avg - lo, 1e-9),
+                    0.5 + 0.5 * (ppg - avg) / max(hi - avg, 1e-9)).clip(0, 1).tolist()
     txt = np.array([[a.fmt(v) for a, v in zip(AXES, row)] for row in teams[[a.key for a in AXES]].to_numpy()])
     return payload | dict(
         axes=axes,
@@ -216,12 +226,15 @@ def build(df: pd.DataFrame, league: str | None = None) -> tuple[dict, pd.DataFra
         teams=teams.index.tolist(),
         sub=[f"{lg} · {m} matches · {p:.2f} points / game"
              for lg, m, p in zip(teams['league_name'], teams['matches'], ppg)],
-        color=sample_colorscale(PPG_COLORSCALE, norm),
+        colorLight=sample_colorscale(PPG_COLORSCALE_LIGHT, norm),
+        colorDark=sample_colorscale(PPG_COLORSCALE_DARK, norm),
         hl=picked.astype(int).tolist() if selecting else None,
-        lineAlpha=float(np.clip(5 / np.sqrt(max(n_picked, 1)), 0.4, 0.95)) if selecting else 0.55,
+        lineAlpha=float(np.clip(5 / np.sqrt(max(n_picked, 1)), 0.4, 0.95)) if selecting else 0.7,
         lineWidth=2.2 if selecting and n_picked <= 15 else 1.4,
-        legend=dict(label="Points / game", lo=f"{ppg.min():.2f}", hi=f"{ppg.max():.2f}",
-                    stops=[c for _, c in PPG_COLORSCALE]),
+        legend=dict(label=f"Points / game (middle = average, {avg:.2f})",
+                    lo=f"{lo:.2f}", hi=f"{hi:.2f}",
+                    stopsLight=[c for _, c in PPG_COLORSCALE_LIGHT],
+                    stopsDark=[c for _, c in PPG_COLORSCALE_DARK]),
     ), teams, picked
 
 
