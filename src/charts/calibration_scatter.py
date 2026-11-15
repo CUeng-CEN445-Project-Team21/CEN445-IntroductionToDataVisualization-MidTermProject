@@ -139,8 +139,14 @@ def build(df: pd.DataFrame, market: str = "Home Win", show_band: bool = True, n_
         yaxis=dict(title=f"Empirical Win Rate ({market})", tickformat=".0%"),
         template=THEME_TEMPLATE,
         height=430,
-        margin=dict(l=10, r=10, t=50, b=10),
-        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+        margin=dict(l=10, r=10, t=55, b=10),
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=0.99,
+            xanchor="right",
+            x=0.80
+        )
     )
     return fig
 

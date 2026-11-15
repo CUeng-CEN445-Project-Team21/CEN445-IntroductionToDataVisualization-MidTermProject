@@ -72,7 +72,7 @@ def build(df: pd.DataFrame, view_mode: str = "Count", zone_filter: str = "All Sc
             elif view_mode == "Percentage (%)":
                 row_text.append(f"{p:.1f}%")
             else:
-                row_text.append(f"{int(c)}<br><span style='font-size:9px;opacity:0.8'>({p:.1f}%)</span>")
+                row_text.append(f"{int(c):,}")
         text_data.append(row_text)
 
     # Custom hover text
@@ -98,6 +98,7 @@ def build(df: pd.DataFrame, view_mode: str = "Count", zone_filter: str = "All Sc
         y=[f"{h} Home" for h in all_goals],
         text=text_data,
         texttemplate="%{text}",
+        textfont=dict(size=13),
         hoverinfo="text",
         hovertext=hover_text,
         colorscale="Magma",
