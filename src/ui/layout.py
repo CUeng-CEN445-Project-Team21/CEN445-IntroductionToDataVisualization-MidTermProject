@@ -16,7 +16,7 @@ import streamlit as st
 
 from src.charts import (
     calibration_scatter, choropleth, league_goals_violin, network_graph,
-    odds_contour, parallel_coordinates, sankey, score_heatmap, treemap,
+    parallel_coordinates, sankey, score_heatmap, season_bubbles, treemap,
 )
 from src.ml import classifier, clustering
 
@@ -41,13 +41,13 @@ CHART_SEGMENTS = [
         ],
     ),
     Segment(
-        label="Charts 4–6 · Odds & Networks",
-        heading="Multi-Dimensional Odds Space & Team Dominance Network",
-        insight="Inspect betting lines across several dimensions at once, see which teams dominate "
-                "head-to-head, and find where upsets cluster in the odds landscape.",
+        label="Charts 4–6 · Teams & Seasons",
+        heading="Team Profiles, Head-to-Head Network & Season Trends",
+        insight="Compare every team's full statistical profile, see who beats whom among a league's "
+                "top teams, and watch whether each league's trends hold from August to May.",
         rows=[
-            [parallel_coordinates],         # Chart 4: Yusuf Semih Can
-            [network_graph, odds_contour],  # Chart 5: Yusuf Semih Can | Chart 6: Yusuf Semih Can
+            [parallel_coordinates],           # Chart 4: Yusuf Semih Can
+            [network_graph, season_bubbles],  # Chart 5: Yusuf Semih Can | Chart 6: Yusuf Semih Can
         ],
     ),
     Segment(

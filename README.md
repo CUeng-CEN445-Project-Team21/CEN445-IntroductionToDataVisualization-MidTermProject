@@ -86,7 +86,7 @@ The dashboard implements **9 distinct visualization techniques (including 6 adva
 │   │   └── loader.py           # Cached loading; rebuilds automatically when raw/ changes
 │   ├── charts/                 # One file per chart: build(df) -> figure, render(df)
 │   │   ├── choropleth.py  treemap.py  sankey.py  parallel_coordinates.py  network_graph.py
-│   │   └── odds_contour.py  score_heatmap.py  calibration_scatter.py  league_goals_violin.py
+│   │   └── season_bubbles.py  score_heatmap.py  calibration_scatter.py  league_goals_violin.py
 │   ├── ml/
 │   │   ├── clustering.py       # K-Means team archetypes
 │   │   └── classifier.py       # Logistic Regression + live simulator
