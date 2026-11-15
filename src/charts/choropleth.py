@@ -62,7 +62,7 @@ def build(df: pd.DataFrame) -> go.Figure:
         labels={'avg_goals': 'Avg Goals / Match'},
         color_continuous_scale='Viridis',
         scope='world',
-        title="🌍 1. European League Landscape: Average Goals & Home Advantage"
+        title="1. European League Landscape: Average Goals & Home Advantage"
     )
 
     fig.update_traces(

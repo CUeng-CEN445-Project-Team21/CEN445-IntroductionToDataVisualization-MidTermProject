@@ -42,7 +42,7 @@ def build(df: pd.DataFrame) -> go.Figure:
             showarrow=False, font=dict(size=14)
         )
         fig.update_layout(
-            title="🌳 2. Goal Dominance & Wins Treemap (League & Team Hierarchy)",
+            title="2. Goal Dominance & Wins Treemap (League & Team Hierarchy)",
             template=THEME_TEMPLATE,
             margin=dict(l=10, r=10, t=50, b=10),
             height=480,
@@ -55,7 +55,7 @@ def build(df: pd.DataFrame) -> go.Figure:
         values='goals',
         color='wins',
         color_continuous_scale='Blues',
-        title="🌳 2. Goal Dominance & Wins Treemap (League & Team Hierarchy)"
+        title="2. Goal Dominance & Wins Treemap (League & Team Hierarchy)"
     )
 
     # Build clean per-node hover summary keyed by full treemap node id
