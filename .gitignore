@@ -5,3 +5,7 @@
 __pycache__/
 *.pyc
 .venv/
+
+# Database files
+*.db
+data/raw/*.db
