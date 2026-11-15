@@ -1,4 +1,4 @@
-# CEN445 Midterm Project Report – Team 21
+# CEN445 Midterm Project Report – Team 9
 
 **European Football Intelligence & Match Dynamics Dashboard** · November 2026
 

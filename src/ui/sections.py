@@ -9,7 +9,7 @@ import streamlit as st
 def header(df: pd.DataFrame):
     st.markdown(
         '<div class="mast">'
-        '<div class="mast-eyebrow">CEN445 · Introduction to Data Visualization · Team 21</div>'
+        '<div class="mast-eyebrow">CEN445 · Introduction to Data Visualization · Team 9</div>'
         '<div class="mast-title">European Football <span class="thin">Intelligence &amp;</span> Match Dynamics</div>'
         '<div class="mast-sub">Results, goals and betting markets across Europe\'s top leagues. '
         'Every chart and model on this page follows the filters in the sidebar.</div>'
@@ -46,7 +46,7 @@ def data_explorer(df: pd.DataFrame):
 
 def footer():
     st.markdown(
-        '<div class="foot"><span>CEN445 Introduction to Data Visualization · Team 21</span>'
+        '<div class="foot"><span>CEN445 Introduction to Data Visualization · Team 9</span>'
         '<span>Python · Streamlit · Plotly · scikit-learn</span></div>',
         unsafe_allow_html=True,
     )
