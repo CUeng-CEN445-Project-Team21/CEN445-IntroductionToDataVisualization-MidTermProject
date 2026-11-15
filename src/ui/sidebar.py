@@ -49,11 +49,11 @@ def _season_label(season: str) -> str:
 
 def render(df_raw: pd.DataFrame) -> pd.DataFrame:
     with st.sidebar:
-        st.markdown("## ⚽ Filters")
+        st.markdown("## Filters")
         st.caption("Every chart and model on the page uses these filters.")
 
         # --- Competition ------------------------------------------------------
-        st.markdown("##### 🏆 Competition")
+        st.markdown('<div class="side-label">Competition</div>', unsafe_allow_html=True)
         leagues = st.multiselect(
             "Leagues",
             options=sorted(df_raw['league_name'].unique().tolist()),
@@ -73,7 +73,7 @@ def render(df_raw: pd.DataFrame) -> pd.DataFrame:
         )
 
         # --- Match profile ----------------------------------------------------
-        st.markdown("##### 🎯 Match profile")
+        st.markdown('<div class="side-label">Match profile</div>', unsafe_allow_html=True)
         min_goals, max_goals = int(df_raw['total_goals'].min()), int(df_raw['total_goals'].max())
         goal_range = st.slider(
             "Total goals in match",
@@ -109,7 +109,7 @@ def render(df_raw: pd.DataFrame) -> pd.DataFrame:
         share = len(filtered) / len(df_raw) if len(df_raw) else 0
         st.markdown(f"**{len(filtered):,}** of {len(df_raw):,} matches")
         st.progress(share)
-        st.button("↺ Reset filters", on_click=_reset_filters, width="stretch")
+        st.button("Reset filters", icon=":material/restart_alt:", on_click=_reset_filters, width="stretch")
         st.caption(f"Dataset: {df_raw['league_name'].nunique()} leagues · "
                    f"{df_raw['season'].nunique()} seasons · {df_raw.shape[1]} columns")
 

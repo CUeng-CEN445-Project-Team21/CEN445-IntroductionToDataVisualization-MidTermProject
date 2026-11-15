@@ -157,7 +157,7 @@ def silhouette_figure(silhouette: dict, k: int) -> go.Figure:
 # ── Page ─────────────────────────────────────────────────────────────────────────────────────
 
 def render(df: pd.DataFrame):
-    st.markdown("#### 1️⃣ K-Means Clustering: Team Tactical Archetypes")
+    st.markdown("#### 1 · K-Means Clustering: Team Tactical Archetypes")
     st.caption("Do teams fall into natural tiers by how much they score, concede and win? "
                f"Each dot is a team with {MIN_MATCHES}+ matches in the current filter.")
 
@@ -197,7 +197,7 @@ def render(df: pd.DataFrame):
                        'Conceded / match': st.column_config.NumberColumn(format="%.2f"),
                        'Win %': st.column_config.NumberColumn(format="%.1f%%")},
     )
-    with st.expander("🔍 Every team and its tier"):
+    with st.expander("Every team and its tier"):
         st.dataframe(
             teams.sort_values(['tier', 'win_rate'], ascending=[True, False])[
                 ['team_name', 'league_name', 'cluster_label', 'matches', 'goals_per_match',

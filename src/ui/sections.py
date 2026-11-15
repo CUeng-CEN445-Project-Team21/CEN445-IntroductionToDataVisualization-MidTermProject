@@ -7,10 +7,15 @@ import streamlit as st
 
 
 def header(df: pd.DataFrame):
-    st.markdown('<div class="main-header">European Football Intelligence & Match Dynamics</div>',
-                unsafe_allow_html=True)
-    st.markdown('<div class="sub-header">Interactive Exploratory Visualization Dashboard • CEN445 Assignment</div>',
-                unsafe_allow_html=True)
+    st.markdown(
+        '<div class="mast">'
+        '<div class="mast-eyebrow">CEN445 · Introduction to Data Visualization · Team 21</div>'
+        '<div class="mast-title">European Football <span class="thin">Intelligence &amp;</span> Match Dynamics</div>'
+        '<div class="mast-sub">Results, goals and betting markets across Europe\'s top leagues. '
+        'Every chart and model on this page follows the filters in the sidebar.</div>'
+        '</div>',
+        unsafe_allow_html=True,
+    )
 
     kpi1, kpi2, kpi3, kpi4, kpi5 = st.columns(5)
     total = len(df)
@@ -28,10 +33,11 @@ def header(df: pd.DataFrame):
 
 def data_explorer(df: pd.DataFrame):
     st.write("---")
-    with st.expander("📥 Explore Filtered Data & Export"):
+    with st.expander("Explore the filtered data & export", icon=":material/table_view:"):
         st.dataframe(df.head(100), width="stretch")
         st.download_button(
-            label="⬇️ Download Filtered Data as CSV",
+            label="Download filtered data as CSV",
+            icon=":material/download:",
             data=df.to_csv(index=False).encode('utf-8'),
             file_name="filtered_matches_cen445.csv",
             mime="text/csv"
@@ -39,4 +45,8 @@ def data_explorer(df: pd.DataFrame):
 
 
 def footer():
-    st.caption("CEN445 Introduction to Data Visualization • Team Project Dashboard • Built with Python & Streamlit")
+    st.markdown(
+        '<div class="foot"><span>CEN445 Introduction to Data Visualization · Team 21</span>'
+        '<span>Python · Streamlit · Plotly · scikit-learn</span></div>',
+        unsafe_allow_html=True,
+    )

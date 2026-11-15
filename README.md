@@ -1,108 +1,64 @@
 # European Football Intelligence & Match Dynamics Dashboard
 ## CEN445 - Introduction to Data Visualization Course Project
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](http://localhost:8501)
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+An interactive dashboard built with **Python**, **Streamlit** and **Plotly**.
 
-An advanced, interactive exploratory data visualization dashboard built with **Python**, **Streamlit**, and **Plotly** to explore and analyze **5,421 European football matches** across 8 major leagues and 2 consecutive seasons (2023–2024 & 2024–2025).
+**Data:** 5,420 matches · 8 leagues · 177 teams · Aug 2023 – Jun 2025 (two seasons)
 
----
-
-### 🌐 Live Dashboard Architecture & Features
-
-The dashboard implements **9 distinct visualization techniques (including 6 advanced types)** and **2 Machine Learning algorithms**, fulfilling and exceeding all requirements for the CEN445 assignment:
-
-| # | Visualization Method | Category | Insight / Analytical Perspective |
-|---|----------------------|----------|----------------------------------|
-| 1 | **Choropleth Map** | Advanced | European geographical distribution of goal frequency and home advantage. |
-| 2 | **Hierarchical Treemap** | Advanced | League $\rightarrow$ Club hierarchy partitioned by total goals and win volume. |
-| 3 | **Sankey Diagram** | Advanced | Momentum transition flow from Half-Time (HT) to Full-Time (FT) outcomes, highlighting comeback matches. |
-| 4 | **Parallel Coordinates** | Advanced | Multi-dimensional mapping of Home, Draw, Away, and Over 2.5 odds to match results. |
-| 5 | **Head-to-Head Network Graph** | Advanced | Directed dominance network topology among top teams within any selected league. |
-| 6 | **2D Density Contour Plot** | Advanced | Market odds density landscape revealing clusters and upset sweet-spots. |
-| 7 | **Score Frequency Heatmap** | Analytical | Exact fulltime score combination matrix (0–5 goals). |
-| 8 | **Calibration Scatter Plot** | Analytical | Market efficiency check: Implied probability ($1/\text{odds}$) vs observed win frequency. |
-| 9 | **Violin & Box Plot** | Analytical | League-by-league goal distribution, medians, IQR, and high-scoring outliers. |
+Every chart and model answers one question that no other chart answers.
 
 ---
 
-### 🤖 Machine Learning Models
-1. **K-Means Clustering:** Unsupervised tactical profiling of 150+ teams into 3 tiers (*Elite Dominators*, *Balanced Competitors*, *Relegation Strugglers*) based on attacking and defensive performance metrics.
-2. **Multinomial Logistic Regression:** Predictive modeling for match outcome classification (Home, Draw, Away) from closing market odds with ~56.2% accuracy. Includes an interactive live simulator for testing arbitrary odds lines.
+### 📊 Charts & Models
+
+| # | Chart | Owner | Question it answers | How to interact |
+|---|-------|-------|---------------------|-----------------|
+| 1 | Choropleth map | Necdet Özdemir | Where is home advantage strongest? | Hover a country (value printed on each) |
+| 2 | Treemap | Necdet Özdemir | Which clubs produce the goals and wins in each league? | Click a league to zoom |
+| 3 | Sankey | Necdet Özdemir | How often does the half-time result hold to full-time? | Hover a flow |
+| 4 | Parallel coordinates | Yusuf Semih Can | What does each team's full statistical profile look like? | Hover a line, click to pin a team; click an axis bar to highlight a range; league pills |
+| 5 | Network graph | Yusuf Semih Can | Among a league's top teams, who beats whom? | Click a team to pin it (shared with #4); click an arrow for that head-to-head; league selectbox |
+| 6 | Animated bubble chart | Yusuf Semih Can | Do league trends hold through the season? | Play button + month slider; click a bubble to draw its Aug → May path |
+| 7 | Score heatmap | Celal Kadir Aydaş | Which exact scorelines are most common? | Count / % pills; zone filter |
+| 8 | Calibration scatter | Celal Kadir Aydaş | Are bookmaker odds accurate? | Market pills (H / D / A); ±3 pp band toggle |
+| 9 | Violin + box plot | Celal Kadir Aydaş | How spread out are goals in each league? | Sort pills; 2.5 / 3.5 benchmark line |
+| ML1 | K-Means clustering | — | Which types of team are there? | k slider (2–4); rate teams within their own league |
+| ML2 | Logistic regression | — | How well do recent results and the odds predict a result? | Model and score switches; match simulator (pick two teams) |
+
+**Sidebar filters** (apply to every chart): leagues, season, total goals, max home odds, comebacks only.
 
 ---
 
-### 🎛️ Interactive Controls & Filters
-- **Multiselect Dropdown:** Filter by any combination of the 7 European leagues.
-- **Selectbox:** Switch between seasons (*All Seasons*, *2024-2025*, *2023-2024*).
-- **Range Slider:** Filter by total goals per match (0 to 10).
-- **Float Slider:** Max home odds threshold filter.
-- **Checkbox:** Isolate thrilling comebacks (halftime deficit turned into fulltime victory).
-- **Interactive Cluster Slider:** Dynamically configure $k$ for K-Means clustering.
-- **Interactive Simulator:** Live input for custom odds testing.
+### 🚀 Quickstart
 
----
-
-### 🚀 Quickstart & Setup
-
-1. **Clone the repository:**
-   ```bash
-   git clone git@github.com:celal-ay/cen445-football-viz.git
-   cd cen445-football-viz
-   ```
-
-2. **Install required dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Run the Streamlit Dashboard:**
-   ```bash
-   streamlit run app.py
-   ```
-   *The application will automatically open in your default browser at `http://localhost:8501`.*
-
----
-
-### 📁 Project Directory Structure
-```text
-├── app.py                      # Entry point: wires the page together (no charts or filters here)
-├── requirements.txt
-├── .streamlit/config.toml      # Streamlit settings (theme follows the device's light/dark mode)
-│
-├── data/
-│   ├── raw/                    # 📥 Drop new data here (CSV / XLSX / SQLite / Parquet)
-│   │   └── base_matches_2023-2025.csv
-│   └── processed/
-│       ├── matches.parquet     # Generated by the pipeline — what the app reads
-│       └── manifest.json       # Which raw files the parquet was built from
-│
-├── src/
-│   ├── theme.py                # Shared chart template & colour palette
-│   ├── data/
-│   │   ├── schema.py           # Leagues + column contract (what every chart receives)
-│   │   ├── pipeline.py         # raw/ → processed/matches.parquet
-│   │   └── loader.py           # Cached loading; rebuilds automatically when raw/ changes
-│   ├── charts/                 # One file per chart: build(df) -> figure, render(df)
-│   │   ├── choropleth.py  treemap.py  sankey.py  parallel_coordinates.py  network_graph.py
-│   │   └── season_bubbles.py  score_heatmap.py  calibration_scatter.py  league_goals_violin.py
-│   ├── ml/
-│   │   ├── clustering.py       # K-Means team archetypes
-│   │   └── classifier.py       # Logistic Regression + live simulator
-│   └── ui/
-│       ├── layout.py           # Tabs, chart segments and columns      ← the page map
-│       ├── sidebar.py          # Filters
-│       ├── sections.py         # Header, KPI row, data explorer, footer
-│       └── styles.py           # Custom CSS
-│
-└── docs/
-    ├── DEVELOPMENT_LOG.md
-    └── REPORT.md
+```bash
+git clone https://github.com/CUeng-CEN445-Project-Team21/CEN445-IntroductionToDataVisualization-MidTermProject.git
+cd CEN445-IntroductionToDataVisualization-MidTermProject
+pip install -r requirements.txt
+streamlit run app.py
 ```
+
+On Windows you can also double-click `run.bat`.
+
 ---
 
-### 👥 Team Contribution Matrix
-* **Necdet Özdemir - 2021555049 : Charts 1-2-3**
-* **Yusuf Semih Can - 2022555475 :Charts 4-5-6**
-* **Celal Kadir Aydaş - 2022555006 : Charts 7-8-9**
+### 📁 Project Structure
+```text
+├── app.py                 # Entry point: wires the page together
+├── data/
+│   ├── raw/               # 📥 Drop new data here (CSV / XLSX / SQLite / Parquet)
+│   └── processed/         # matches.parquet, rebuilt automatically when raw/ changes
+└── src/
+    ├── theme.py           # Shared colours (results, leagues)
+    ├── data/              # schema, pipeline, loader
+    ├── charts/            # One file per chart: build(df), render(df)
+    ├── ml/                # clustering.py (ML1), classifier.py (ML2), features.py
+    └── ui/                # layout.py (page map), sidebar.py, sections.py, styles.py
+```
+
+---
+
+### 👥 Team
+* **Necdet Özdemir** - 2021555049 : Charts 1-2-3
+* **Yusuf Semih Can** - 2022555475 : Charts 4-5-6
+* **Celal Kadir Aydaş** - 2022555006 : Charts 7-8-9

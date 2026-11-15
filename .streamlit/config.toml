@@ -1,5 +1,58 @@
 # Streamlit settings (used locally and on Streamlit Community Cloud)
-# No [theme] section on purpose: the app follows each visitor's light/dark device setting.
+#
+# Theme: "Matchday". Two looks that share one identity:
+#   light = chalk-white programme paper with a deep touchline-green sidebar
+#   dark  = the pitch under floodlights
+# The app still follows each visitor's light/dark device setting; [theme.light] and
+# [theme.dark] say what each of those looks like. Chart data colours live in src/theme.py.
 
 [browser]
 gatherUsageStats = false
+
+[theme]
+font = "Barlow:https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&display=swap"
+headingFont = "Barlow Condensed:https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&display=swap"
+codeFont = "JetBrains Mono:https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap"
+baseFontSize = 15
+baseRadius = "0.25rem"
+buttonRadius = "0.25rem"
+showWidgetBorder = true
+headingFontWeights = [800, 700, 700, 600, 600, 600]
+
+# ---- Light: programme paper -------------------------------------------------
+[theme.light]
+primaryColor = "#1E6B45"              # touchline green
+backgroundColor = "#F3EFE4"           # chalk paper
+secondaryBackgroundColor = "#E9E3D3"  # card / widget fill
+textColor = "#18211C"                 # programme ink
+borderColor = "#D3CBB6"
+linkColor = "#1E6B45"
+codeBackgroundColor = "#E9E3D3"
+dataframeHeaderBackgroundColor = "#E9E3D3"
+
+[theme.light.sidebar]
+primaryColor = "#C9E36A"              # floodlight lime on the green
+backgroundColor = "#173A2A"           # dugout green
+secondaryBackgroundColor = "#204B37"
+textColor = "#EEEADD"
+borderColor = "#2F5C46"
+linkColor = "#C9E36A"
+
+# ---- Dark: pitch under floodlights -----------------------------------------
+[theme.dark]
+primaryColor = "#C9E36A"              # floodlight lime
+backgroundColor = "#0F1813"           # night pitch
+secondaryBackgroundColor = "#17241C"
+textColor = "#ECE8DB"                 # chalk lines
+borderColor = "#2A3B31"
+linkColor = "#C9E36A"
+codeBackgroundColor = "#17241C"
+dataframeHeaderBackgroundColor = "#17241C"
+
+[theme.dark.sidebar]
+primaryColor = "#C9E36A"
+backgroundColor = "#0A110D"
+secondaryBackgroundColor = "#142019"
+textColor = "#ECE8DB"
+borderColor = "#22322A"
+linkColor = "#C9E36A"

@@ -10,7 +10,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from src.theme import THEME_TEMPLATE, COLOR_PALETTE
+from src.theme import DIVERGING, GUIDE_LINE, THEME_TEMPLATE, rgba
 
 
 def build(df: pd.DataFrame, market: str = "Home Win", show_band: bool = True, n_bins: int = 15) -> go.Figure:
@@ -48,11 +48,11 @@ def build(df: pd.DataFrame, market: str = "Home Win", show_band: bool = True, n_
     # Classify pricing efficiency: Value vs Overpriced
     def classify_status(diff):
         if diff > 0.02:
-            return "Value Bet (Bookmaker Underestimated)", "#10B981"  # Emerald Green
+            return "Value Bet (Bookmaker Underestimated)", DIVERGING['positive']
         elif diff < -0.02:
-            return "Overpriced (Bookmaker Overestimated)", "#EF4444"  # Coral Red
+            return "Overpriced (Bookmaker Overestimated)", DIVERGING['negative']
         else:
-            return "Fairly Priced (Efficient)", "#3B82F6"             # Balanced Blue
+            return "Fairly Priced (Efficient)", DIVERGING['neutral']
 
     status_color = [classify_status(d) for d in calib['diff']]
     calib['status'] = [s[0] for s in status_color]
@@ -77,7 +77,7 @@ def build(df: pd.DataFrame, market: str = "Home Win", show_band: bool = True, n_
             x=line_x, y=lower_band,
             mode='lines',
             fill='tonexty',
-            fillcolor='rgba(59, 130, 246, 0.12)',
+            fillcolor=rgba(DIVERGING['neutral'], 0.16),
             line=dict(width=0),
             name='±3% Fair Efficiency Band',
             hoverinfo='none'
@@ -88,7 +88,7 @@ def build(df: pd.DataFrame, market: str = "Home Win", show_band: bool = True, n_
         x=[min_p, max_p], y=[min_p, max_p],
         mode='lines',
         name='Perfect 1:1 Calibration',
-        line=dict(dash='dash', color='#94A3B8', width=2)
+        line=dict(dash='dash', color=GUIDE_LINE, width=2)
     ))
 
     # 3. Observed Market Points
@@ -110,7 +110,7 @@ def build(df: pd.DataFrame, market: str = "Home Win", show_band: bool = True, n_
         y=calib['actual_win_rate'],
         mode='markers+lines',
         name='Observed Market Outcome',
-        line=dict(color='rgba(148, 163, 184, 0.4)', width=1.5),
+        line=dict(color=rgba(DIVERGING['neutral'], 0.45), width=1.5),
         marker=dict(
             size=np.clip(calib['match_count'] / 25 + 7, 7, 24),
             color=calib['color'],
@@ -127,10 +127,10 @@ def build(df: pd.DataFrame, market: str = "Home Win", show_band: bool = True, n_
         xref="paper", yref="paper",
         x=0.03, y=0.92,
         showarrow=False,
-        bgcolor="rgba(30, 41, 59, 0.8)",
-        bordercolor="#334155",
+        bgcolor="rgba(0, 0, 0, 0)",
+        bordercolor=GUIDE_LINE,
         borderwidth=1,
-        font=dict(size=11, color="#94A3B8")
+        font=dict(size=11)
     )
 
     fig.update_layout(

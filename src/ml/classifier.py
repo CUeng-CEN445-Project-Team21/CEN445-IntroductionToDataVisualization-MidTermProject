@@ -243,7 +243,7 @@ def _headline(scores: dict) -> str:
     added = comb['log_loss'] - book['log_loss']
     verdict = ("adds nothing measurable: the odds already price recent form in"
                if added > -0.005 else f"improves the log-loss by {-added:.3f}")
-    return (f"💡 Knowing only recent results, the model calls **{res['accuracy']:.1%}** of results right, "
+    return (f"Knowing only recent results, the model calls **{res['accuracy']:.1%}** of results right, "
             f"{behind} the bookmakers' favourite ({book['accuracy']:.1%}). "
             f"Putting those results on top of the odds {verdict}.")
 
@@ -254,7 +254,7 @@ def _team_caption(state: pd.Series) -> str:
 
 
 def _render_simulator(df: pd.DataFrame, full: pd.DataFrame, models: dict):
-    st.markdown("##### 🔮 Simulator: what if these two met next?")
+    st.markdown("##### Simulator: what if these two met next?")
     st.caption("Ratings are each team's Elo and last-5 form after its latest match in the dataset. "
                "The odds start at the results-only model's fair price; type a real bookmaker line "
                "to see how much the combined model moves towards it.")
@@ -308,7 +308,7 @@ def _render_simulator(df: pd.DataFrame, full: pd.DataFrame, models: dict):
 
 
 def render(df: pd.DataFrame):
-    st.markdown("#### 2️⃣ Logistic Regression: Can Recent Results Beat the Bookmakers?")
+    st.markdown("#### 2 · Logistic Regression: Can Recent Results Beat the Bookmakers?")
     st.caption("Does a team's recent record tell you anything the betting odds don't? "
                "Two models are trained on earlier matches and tested on the latest 25% of the filter.")
     full = load_data()
@@ -356,7 +356,7 @@ def render(df: pd.DataFrame):
             "The combined model also gets the odds. Each bar on the left is the damage done by "
             "shuffling that one input."
         )
-        with st.expander("📋 Scores as a table"):
+        with st.expander("Scores as a table"):
             st.dataframe(pd.DataFrame({
                 'Predictor': PREDICTORS,
                 'Accuracy': [scores[n]['accuracy'] for n in PREDICTORS],

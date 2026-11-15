@@ -37,7 +37,8 @@ df = sidebar.render(df_raw)
 
 sections.header(df)
 if df.empty:
-    st.warning("⚠️ No matches match your filter criteria. Please broaden your selections in the sidebar.")
+    st.warning("No matches fit these filters. Broaden your selections in the sidebar.",
+               icon=":material/filter_alt_off:")
     st.stop()
 
 layout.render(df)

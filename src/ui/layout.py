@@ -4,7 +4,7 @@ layout.py - What goes where on the page. This file is a map of the dashboard.
 The page has two tabs:
   * Visual Analysis - the nine charts, split into three segments (one per team member).
                       A segmented control at the top picks which segment is shown.
-  * AI & Machine Learning - the clustering and classification models.
+  * Machine Learning - the clustering and classification models.
 
 Each segment has a list of rows. A row is a list of modules drawn side by side
 (one module = full width, two = two columns, ...). The string "---" draws a divider.
@@ -63,7 +63,7 @@ CHART_SEGMENTS = [
 ]
 
 ML_SEGMENT = Segment(
-    label="AI & Machine Learning",
+    label="Machine Learning",
     heading="Machine Learning Augmentation (Clustering & Classification)",
     insight="Machine learning models identify underlying tactical archetypes of teams and provide "
             "probability distributions for match outcomes based on market closing lines.",
@@ -76,8 +76,9 @@ ML_SEGMENT = Segment(
 
 
 def _draw_segment(segment: Segment, df):
-    st.subheader(segment.heading)
-    st.caption(f"💡 {segment.insight}")
+    st.markdown(f'<div class="section-kicker">{segment.label}</div>', unsafe_allow_html=True)
+    st.subheader(segment.heading, anchor=False)
+    st.caption(segment.insight)
     for row in segment.rows:
         if row == "---":
             st.divider()
@@ -88,7 +89,7 @@ def _draw_segment(segment: Segment, df):
 
 
 def render(df):
-    charts_tab, ml_tab = st.tabs(["📊 Visual Analysis", "🤖 AI & Machine Learning"])
+    charts_tab, ml_tab = st.tabs([":material/insights: Visual Analysis", ":material/hub: Machine Learning"])
 
     with charts_tab:
         labels = [s.label for s in CHART_SEGMENTS]

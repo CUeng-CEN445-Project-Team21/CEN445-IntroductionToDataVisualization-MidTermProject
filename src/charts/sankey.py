@@ -7,22 +7,23 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from src.theme import COLOR_PALETTE, THEME_TEMPLATE
+from src.theme import COLOR_PALETTE, GUIDE_LINE, THEME_TEMPLATE, rgba
 
 
 def _classify_flow(htr: str, ftr: str) -> tuple[str, str]:
-    """Return (flow_label, rgba_color) for a Half-Time -> Full-Time transition."""
+    """Return (flow_label, rgba_color) for a Half-Time -> Full-Time transition.
+    A flow wears the colour of the full-time result; comebacks are drawn strongest."""
     if htr == 'A' and ftr == 'H':
-        return "Home Comeback", "rgba(16, 185, 129, 0.75)"   # Emerald comeback
+        return "Home Comeback", rgba(COLOR_PALETTE['home'], 0.80)
     if htr == 'H' and ftr == 'A':
-        return "Away Comeback", "rgba(244, 63, 94, 0.75)"    # Rose away comeback
+        return "Away Comeback", rgba(COLOR_PALETTE['away'], 0.80)
     if htr == 'H' and ftr == 'H':
-        return "Home Lead Held", "rgba(59, 130, 246, 0.40)"  # Blue
+        return "Home Lead Held", rgba(COLOR_PALETTE['home'], 0.35)
     if htr == 'D' and ftr == 'D':
-        return "Draw Held", "rgba(245, 158, 11, 0.35)"       # Amber
+        return "Draw Held", rgba(COLOR_PALETTE['draw'], 0.35)
     if htr == 'A' and ftr == 'A':
-        return "Away Lead Held", "rgba(239, 68, 68, 0.35)"   # Red
-    return "Momentum Shift", "rgba(148, 163, 184, 0.25)"
+        return "Away Lead Held", rgba(COLOR_PALETTE['away'], 0.35)
+    return "Momentum Shift", rgba(COLOR_PALETTE['neutral'], 0.28)
 
 
 def build(df: pd.DataFrame) -> go.Figure:
@@ -39,10 +40,7 @@ def build(df: pd.DataFrame) -> go.Figure:
         "HT: Home Lead", "HT: Draw", "HT: Away Lead",
         "FT: Home Win", "FT: Draw", "FT: Away Win"
     ]
-    node_colors = [
-        COLOR_PALETTE['home'], COLOR_PALETTE['draw'], COLOR_PALETTE['away'],
-        "#2563EB", "#D97706", "#DC2626"
-    ]
+    node_colors = [COLOR_PALETTE['home'], COLOR_PALETTE['draw'], COLOR_PALETTE['away']] * 2
 
     source_idx = {'H': 0, 'D': 1, 'A': 2}
     target_idx = {'H': 3, 'D': 4, 'A': 5}
@@ -60,7 +58,7 @@ def build(df: pd.DataFrame) -> go.Figure:
         node=dict(
             pad=18,
             thickness=22,
-            line=dict(color="rgba(148, 163, 184, 0.6)", width=0.6),
+            line=dict(color=GUIDE_LINE, width=0.6),
             label=node_labels,
             color=node_colors,
             hovertemplate="<b>%{label}</b><br>Matches: <b>%{value:,}</b><extra></extra>",
@@ -83,7 +81,7 @@ def build(df: pd.DataFrame) -> go.Figure:
     )])
 
     fig.update_layout(
-        title="🌊 3. Half-Time to Full-Time Result Momentum (Sankey Flow)",
+        title="3. Half-Time to Full-Time Result Momentum (Sankey Flow)",
         template=THEME_TEMPLATE,
         height=480,
         margin=dict(l=10, r=10, t=50, b=10)

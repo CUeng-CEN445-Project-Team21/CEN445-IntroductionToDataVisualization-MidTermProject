@@ -10,7 +10,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
-from src.theme import THEME_TEMPLATE
+from src.theme import COLOR_PALETTE, THEME_TEMPLATE
 
 
 def build(
@@ -76,11 +76,11 @@ def build(
         fig.add_hline(
             y=threshold_val,
             line_dash="dash",
-            line_color="#EF4444",
+            line_color=COLOR_PALETTE['highlight'],
             line_width=2,
             annotation_text=f"Benchmark: {threshold_val} Goals",
             annotation_position="top right",
-            annotation_font=dict(color="#EF4444", size=11)
+            annotation_font=dict(size=11)
         )
 
     # Compute league averages for subtitle / annotation
@@ -94,7 +94,7 @@ def build(
         xref="paper", yref="paper",
         x=0.01, y=1.04,
         showarrow=False,
-        font=dict(size=11, color="#94A3B8")
+        font=dict(size=11)
     )
 
     fig.update_layout(
